@@ -4,15 +4,15 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/home/ubombi/.nvim-package-control/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.nvim-package-control/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('/home/ubombi/.nvim-package-control')
-  call dein#begin('/home/ubombi/.nvim-package-control')
+if dein#load_state('~/.nvim-package-control')
+  call dein#begin('~/.nvim-package-control')
 
   " Let dein manage dein
   " Required:
-  call dein#add('/home/ubombi/.nvim-package-control/repos/github.com/Shougo/dein.vim')
+  call dein#add('~/.nvim-package-control/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
   call dein#add('Shougo/neosnippet.vim')
@@ -21,6 +21,7 @@ if dein#load_state('/home/ubombi/.nvim-package-control')
   call dein#add('fatih/vim-go.git')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-go', {'build': 'make'})
+  call dein#add('zchee/deoplete-jedi')
 
   " Color SCHEME
   call dein#add('altercation/vim-colors-solarized')
@@ -42,6 +43,7 @@ if dein#load_state('/home/ubombi/.nvim-package-control')
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
   call dein#add('jiangmiao/auto-pairs')
   call dein#add('luochen1990/rainbow')
+  call dein#add('chrisbra/csv.vim')
 
   " Required:
   call dein#end()
@@ -74,6 +76,7 @@ let g:python3_host_prog  = '/usr/bin/python'
 let g:python3_host_skip_check = 1
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#sources#jedi#show_docstring = 1 "check this
 
 let g:rainbow_active = 1
 let g:AutoPairsFlyMode = 0
