@@ -129,7 +129,7 @@ augroup filetype-go
     autocmd FileType go ia httpwr w<Space>http.ResponseWriter,<Space>r<Space>*http.Request
 augroup END
 
-
+autocmd FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
 " Theme config
 colorscheme molokai
 let g:airline_theme='molokai'
