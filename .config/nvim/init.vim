@@ -29,6 +29,8 @@ if dein#load_state('~/.nvim-package-control')
   
   call dein#add('scrooloose/nerdcommenter')
   call dein#add('scrooloose/nerdtree')
+  call dein#add('jistr/vim-nerdtree-tabs')
+  call dein#add('majutsushi/tagbar')
   
   "GIT
   call dein#add('airblade/vim-gitgutter')
@@ -44,6 +46,7 @@ if dein#load_state('~/.nvim-package-control')
   call dein#add('jiangmiao/auto-pairs')
   call dein#add('luochen1990/rainbow')
   call dein#add('chrisbra/csv.vim')
+  call dein#add('Chiel92/vim-autoformat')
 
   " Required:
   call dein#end()
@@ -71,6 +74,11 @@ nnoremap <leader><leader> :w<cr>
 set completeopt+=noselect
 set number
 set relativenumber
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+
 let g:python3_host_prog  = '/usr/bin/python'
 " Skip the check of neovim module
 let g:python3_host_skip_check = 1
@@ -80,6 +88,14 @@ let g:deoplete#sources#jedi#show_docstring = 1 "check this
 
 let g:rainbow_active = 1
 let g:AutoPairsFlyMode = 0
+
+" AutoFormatter
+let g:autoformat_verbosemode=1
+let g:formatdef_autopep8 = "'autopep8 - --max-line-length=120 --range '.a:firstline.' '.a:lastline"
+let g:formatters_python = ['autopep8', 'css-beautify', 'js-beautify']
+
+" TABS
+let g:nerdtree_tabs_open_on_console_startup=1
 
 "--------------------------------------------------
 " vim-go
@@ -136,6 +152,8 @@ let g:airline_theme='molokai'
 
 " toggle invisible characters
 set list
+set tabstop=4
+set shiftwidth=4
 set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 
@@ -161,10 +179,15 @@ autocmd VimEnter * if !argc() | NERDTree | endif
 map <leader>T :NERDTreeFind<cr>
 " Toogle on/off
 nmap <leader>o :NERDTreeToggle<cr>
+nmap <leader>l :TagbarToggle<cr>
+
+
+noremap <F3> :Autoformat<CR>
 
 " --------------------------------------
 " Navigate between split windows quickly
 " --------------------------------------
+"
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
