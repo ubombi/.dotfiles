@@ -47,6 +47,7 @@ if dein#load_state('~/.nvim-package-control')
   call dein#add('luochen1990/rainbow')
   call dein#add('chrisbra/csv.vim')
   call dein#add('Chiel92/vim-autoformat')
+  call dein#add('nvie/vim-flake8')
 
   " Required:
   call dein#end()
@@ -90,10 +91,10 @@ let g:rainbow_active = 1
 let g:AutoPairsFlyMode = 0
 
 " AutoFormatter
-let g:autoformat_verbosemode=1
+let g:autoformat_verbosemode=0
 let g:formatdef_autopep8 = "'autopep8 - --max-line-length=120 --range '.a:firstline.' '.a:lastline"
 let g:formatters_python = ['autopep8', 'css-beautify', 'js-beautify']
-
+let g:flake8_show_in_gutter = 1
 " TABS
 let g:nerdtree_tabs_open_on_console_startup=1
 
@@ -146,6 +147,10 @@ augroup filetype-go
 augroup END
 
 autocmd FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
+" autocmd FileType python map <buffer> <F3> :call Flake8()<CR> 
+autocmd BufWrite * :Autoformat
+autocmd BufWritePost *.py call Flake8()
+
 " Theme config
 colorscheme molokai
 let g:airline_theme='molokai'
