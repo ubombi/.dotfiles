@@ -22,6 +22,7 @@ if dein#load_state('~/.nvim-package-control')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-go', {'build': 'make'})
   call dein#add('zchee/deoplete-jedi')
+  call dein#add('davidhalter/jedi-vim')
 
   " Color SCHEME
   call dein#add('altercation/vim-colors-solarized')
@@ -48,6 +49,7 @@ if dein#load_state('~/.nvim-package-control')
   call dein#add('chrisbra/csv.vim')
   call dein#add('Chiel92/vim-autoformat')
   call dein#add('nvie/vim-flake8')
+  call dein#add('fholgado/minibufexpl.vim')
 
   " Required:
   call dein#end()
@@ -78,7 +80,18 @@ set relativenumber
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
-
+" toggle invisible characters
+set list
+set tabstop=4
+set shiftwidth=4
+set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+" ---------------
+" Search settings
+" ---------------
+set ignorecase
+set smartcase
+set incsearch
 
 let g:python3_host_prog  = '/usr/bin/python'
 " Skip the check of neovim module
@@ -92,12 +105,14 @@ let g:AutoPairsFlyMode = 0
 
 " AutoFormatter
 let g:autoformat_verbosemode=0
-let g:formatdef_autopep8 = "'autopep8 - --max-line-length=120 --range '.a:firstline.' '.a:lastline"
-let g:formatters_python = ['autopep8', 'css-beautify', 'js-beautify']
-let g:flake8_show_in_gutter = 1
 " TABS
 let g:nerdtree_tabs_open_on_console_startup=1
 
+let g:formatters_js = ['js-beautify']
+let g:formatters_css = ['css-beautify']
+
+":au BufAdd,BufNewFile * nested tab sball
+let g:nerdtree_tabs_open_on_console_startup = 1
 "--------------------------------------------------
 " vim-go
 "--------------------------------------------------
@@ -146,21 +161,31 @@ augroup filetype-go
     autocmd FileType go ia httpwr w<Space>http.ResponseWriter,<Space>r<Space>*http.Request
 augroup END
 
-autocmd FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
-" autocmd FileType python map <buffer> <F3> :call Flake8()<CR> 
-autocmd BufWrite * :Autoformat
-autocmd BufWritePost *.py call Flake8()
+
+augroup python
+    au!
+    " au filetype python set omnifunc=pythoncomplete#Complete complete+=k~/.vim/syntax/python.vim isk+=.,(
+    " au filetype python setlocal omnifunc=pysmell#Complete complete+=k~/.vim/syntax/python.vim
+    " au filetype python let python_highlight_all=1
+
+    au FileType python let g:auto_ctags = 1
+    au FileType python let g:formatdef_autopep8 = "'autopep8 - --max-line-length=120 --range '.a:firstline.' '.a:lastline"
+    au FileType python let g:formatters_python = ['autopep8']
+	au FileType python let g:flake8_show_in_gutter = 1
+    au FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
+    au FileType python let g:jedi#rename_command = "<leader>e" 
+    au FileType python let g:jedi#use_tabs_not_buffers = 1 
+    au FileType python let g:jedi#completions_enabled = 0 " Because of deoplete-jedi
+	autocmd BufWrite * :Autoformat
+	autocmd BufWritePost * call Flake8()
+augroup END
+
 
 " Theme config
 colorscheme molokai
 let g:airline_theme='molokai'
 
-" toggle invisible characters
-set list
-set tabstop=4
-set shiftwidth=4
-set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
-set showbreak=↪
+
 
 "------------------------------------------------------------------------------
 " NERDTree
@@ -178,7 +203,7 @@ let NERDTreeShowLineNumbers = 0
 let NERDTreeAutoCenter = 1
 
 " Open NERDTree on startup, when no file has been specified
-autocmd VimEnter * if !argc() | NERDTree | endif
+" autocmd VimEnter * if !argc() | NERDTree | endif
 
 " Locate file in hierarchy quickly
 map <leader>T :NERDTreeFind<cr>
@@ -198,12 +223,6 @@ nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 nnoremap <c-h> <c-w><c-h>
 
-" ---------------
-" Search settings
-" ---------------
-set ignorecase
-set smartcase
-set incsearch
 
 
 let g:rainbow_conf = {
