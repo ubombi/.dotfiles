@@ -1,6 +1,6 @@
 "dein Scripts-----------------------------
 if &compatible
-  set nocompatible               " Be iMproved
+	set nocompatible               " Be iMproved
 endif
 
 " Required:
@@ -8,52 +8,52 @@ set runtimepath+=~/.nvim-package-control/repos/github.com/Shougo/dein.vim
 
 " Required:
 if dein#load_state('~/.nvim-package-control')
-  call dein#begin('~/.nvim-package-control')
+	call dein#begin('~/.nvim-package-control')
 
-  " Let dein manage dein
-  " Required:
-  call dein#add('~/.nvim-package-control/repos/github.com/Shougo/dein.vim')
+	" Let dein manage dein
+	" Required:
+	call dein#add('~/.nvim-package-control/repos/github.com/Shougo/dein.vim')
 
-  " Add or remove your plugins here:
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-  " My Plugin list
-  call dein#add('fatih/vim-go.git')
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('zchee/deoplete-go', {'build': 'make'})
-  call dein#add('zchee/deoplete-jedi')
-  call dein#add('davidhalter/jedi-vim')
+	" Add or remove your plugins here:
+	call dein#add('Shougo/neosnippet.vim')
+	call dein#add('Shougo/neosnippet-snippets')
+	" My Plugin list
+	call dein#add('fatih/vim-go.git')
+	call dein#add('Shougo/deoplete.nvim')
+	call dein#add('zchee/deoplete-go', {'build': 'make'})
+	call dein#add('zchee/deoplete-jedi')
+	call dein#add('davidhalter/jedi-vim')
 
-  " Color SCHEME
-  call dein#add('altercation/vim-colors-solarized')
-  call dein#add('fatih/molokai')
-  
-  call dein#add('scrooloose/nerdcommenter')
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('jistr/vim-nerdtree-tabs')
-  call dein#add('majutsushi/tagbar')
-  
-  "GIT
-  call dein#add('airblade/vim-gitgutter')
-  call dein#add('tpope/vim-fugitive')
-  call dein#add('Xuyuanp/nerdtree-git-plugin')
+	" Color SCHEME
+	call dein#add('altercation/vim-colors-solarized')
+	call dein#add('fatih/molokai')
 
-  "Status line
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes')
+	call dein#add('scrooloose/nerdcommenter')
+	call dein#add('scrooloose/nerdtree')
+	call dein#add('jistr/vim-nerdtree-tabs')
+	call dein#add('majutsushi/tagbar')
 
-  " You can specify revision/branch/tag.
-  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-  call dein#add('jiangmiao/auto-pairs')
-  call dein#add('luochen1990/rainbow')
-  call dein#add('chrisbra/csv.vim')
-  call dein#add('Chiel92/vim-autoformat')
-  call dein#add('nvie/vim-flake8')
-  call dein#add('fholgado/minibufexpl.vim')
+	"GIT
+	call dein#add('airblade/vim-gitgutter')
+	call dein#add('tpope/vim-fugitive')
+	call dein#add('Xuyuanp/nerdtree-git-plugin')
 
-  " Required:
-  call dein#end()
-  call dein#save_state()
+	"Status line
+	call dein#add('vim-airline/vim-airline')
+	call dein#add('vim-airline/vim-airline-themes')
+
+	" You can specify revision/branch/tag.
+	call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+	call dein#add('jiangmiao/auto-pairs')
+	call dein#add('luochen1990/rainbow')
+	call dein#add('chrisbra/csv.vim')
+	call dein#add('Chiel92/vim-autoformat')
+	call dein#add('nvie/vim-flake8')
+	call dein#add('fholgado/minibufexpl.vim')
+
+	" Required:
+	call dein#end()
+	call dein#save_state()
 endif
 
 " Required:
@@ -62,7 +62,7 @@ syntax enable
 
 " Install not installed plugins on startup.
 if dein#check_install()
-  call dein#install()
+	call dein#install()
 endif
 
 "End dein Scripts-------------------------
@@ -111,73 +111,71 @@ let g:nerdtree_tabs_open_on_console_startup=1
 let g:formatters_js = ['js-beautify']
 let g:formatters_css = ['css-beautify']
 
-":au BufAdd,BufNewFile * nested tab sball
-let g:nerdtree_tabs_open_on_console_startup = 1
 "--------------------------------------------------
 " vim-go
 "--------------------------------------------------
 augroup filetype-go
-    autocmd!
-    autocmd FileType go setlocal tabstop=4
-    autocmd FileType go setlocal shiftwidth=4
-    autocmd FileType go let g:auto_ctags = 1
-    autocmd FileType go let g:go_fmt_fail_silently = 1
-    autocmd FileType go let g:go_highlight_functions = 1
-    autocmd FileType go let g:go_highlight_methods = 1
-    autocmd FileType go let g:go_highlight_structs = 1
-    autocmd FileType go let g:go_highlight_operators = 1
-    autocmd FileType go let g:go_highlight_build_constraints = 1
-    autocmd FileType go let g:go_play_open_browser = 1
-    autocmd FileType go let g:go_fmt_command = 'goimports'
-    autocmd FileType go let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-    autocmd FileType go let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-    autocmd FileType go let g:deoplete#sources#go#pointer = 1
-    autocmd FileType go let g:deoplete#sources#go#use_cache = 1
-    autocmd FileType go let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
-"    autocmd FileType go let g:deoplete#sources#go#cgo = 1 
+	autocmd!
+	autocmd FileType go setlocal tabstop=4
+	autocmd FileType go setlocal shiftwidth=4
+	autocmd FileType go let g:auto_ctags = 1
+	autocmd FileType go let g:go_fmt_fail_silently = 1
+	autocmd FileType go let g:go_highlight_functions = 1
+	autocmd FileType go let g:go_highlight_methods = 1
+	autocmd FileType go let g:go_highlight_structs = 1
+	autocmd FileType go let g:go_highlight_operators = 1
+	autocmd FileType go let g:go_highlight_build_constraints = 1
+	autocmd FileType go let g:go_play_open_browser = 1
+	autocmd FileType go let g:go_fmt_command = 'goimports'
+	autocmd FileType go let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+	autocmd FileType go let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+	autocmd FileType go let g:deoplete#sources#go#pointer = 1
+	autocmd FileType go let g:deoplete#sources#go#use_cache = 1
+	autocmd FileType go let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
+	"    autocmd FileType go let g:deoplete#sources#go#cgo = 1
 
-    autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
-    autocmd FileType go nmap <leader>b <Plug>(go-build)
-    autocmd FileType go nmap <leader>tr <Plug>(go-test)
-    autocmd FileType go nmap <leader>tf <Plug>(go-test-func)
-    autocmd FileType go nmap <leader>c <Plug>(go-coverage)
+	autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
+	autocmd FileType go nmap <leader>b <Plug>(go-build)
+	autocmd FileType go nmap <leader>tr <Plug>(go-test)
+	autocmd FileType go nmap <leader>tf <Plug>(go-test-func)
+	autocmd FileType go nmap <leader>c <Plug>(go-coverage)
 
-    autocmd FileType go nmap <Leader>df <Plug>(go-def)
-    autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
-    autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-    autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
+	autocmd FileType go nmap <Leader>df <Plug>(go-def)
+	autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
+	autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+	autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
 
-    autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
-    autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+	autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
+	autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 
-    autocmd FileType go nmap <Leader>s <Plug>(go-implements)
-    autocmd FileType go nmap <Leader>i <Plug>(go-info)
-    autocmd FileType go nmap <Leader>e <Plug>(go-rename)
+	autocmd FileType go nmap <Leader>s <Plug>(go-implements)
+	autocmd FileType go nmap <Leader>i <Plug>(go-info)
+	autocmd FileType go nmap <Leader>e <Plug>(go-rename)
 
-    autocmd FileType go hi goErr term=bold ctermfg=13 gui=bold guifg=#ef5939
-    autocmd FileType go :highlight goErr cterm=bold ctermfg=202
-    autocmd FileType go :match goErr /\<err\>/
-    autocmd FileType go ia iferr if<Space>err<Space>!=<Space>nil<Space>{<CR>return err<CR>}
-    autocmd FileType go ia httpwr w<Space>http.ResponseWriter,<Space>r<Space>*http.Request
+	autocmd FileType go hi goErr term=bold ctermfg=13 gui=bold guifg=#ef5939
+	autocmd FileType go :highlight goErr cterm=bold ctermfg=202
+	autocmd FileType go :match goErr /\<err\>/
+	autocmd FileType go ia iferr if<Space>err<Space>!=<Space>nil<Space>{<CR>return err<CR>}
+	autocmd FileType go ia httpwr w<Space>http.ResponseWriter,<Space>r<Space>*http.Request
 augroup END
 
 
 augroup python
-    au!
-    " au filetype python set omnifunc=pythoncomplete#Complete complete+=k~/.vim/syntax/python.vim isk+=.,(
-    " au filetype python setlocal omnifunc=pysmell#Complete complete+=k~/.vim/syntax/python.vim
-    " au filetype python let python_highlight_all=1
+	au!
+	" au filetype python set omnifunc=pythoncomplete#Complete complete+=k~/.vim/syntax/python.vim isk+=.,(
+	" au filetype python setlocal omnifunc=pysmell#Complete complete+=k~/.vim/syntax/python.vim
+	" au filetype python let python_highlight_all=1
 
-    au FileType python let g:auto_ctags = 1
-    au FileType python let g:formatdef_autopep8 = "'autopep8 - --max-line-length=120 --range '.a:firstline.' '.a:lastline"
-    au FileType python let g:formatters_python = ['autopep8']
+	au FileType python let g:auto_ctags = 1
+	au FileType python let g:formatdef_autopep8 = "'autopep8 - --max-line-length=120 --range '.a:firstline.' '.a:lastline"
+	au FileType python let g:formatters_python = ['autopep8']
 	au FileType python let g:flake8_show_in_gutter = 1
-    au FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
-    au FileType python let g:jedi#rename_command = "<leader>e" 
-    au FileType python let g:jedi#use_tabs_not_buffers = 1 
-    au FileType python let g:jedi#completions_enabled = 0 " Because of deoplete-jedi
-	autocmd BufWrite * :Autoformat
-	autocmd BufWritePost * call Flake8()
+	au FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
+	au FileType python let g:jedi#rename_command = "<leader>e"
+	au FileType python let g:jedi#use_tabs_not_buffers = 0
+	au FileType python let g:jedi#completions_enabled = 0 " Because of deoplete-jedi
+	autocmd BufWrite *.py :Autoformat
+	autocmd BufWritePost *.py call Flake8()
 augroup END
 
 
@@ -226,24 +224,24 @@ nnoremap <c-h> <c-w><c-h>
 
 
 let g:rainbow_conf = {
-\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-\   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-\   'operators': '_,_',
-\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-\   'separately': {
-\       '*': {},
-\       'tex': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\       },
-\       'lisp': {
-\           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-\       },
-\       'vim': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-\       },
-\       'html': {
-\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-\       },
-\       'css': 0,
-\   }
-\}
+			\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+			\   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+			\   'operators': '_,_',
+			\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+			\   'separately': {
+			\       '*': {},
+			\       'tex': {
+			\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+			\       },
+			\       'lisp': {
+			\           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+			\       },
+			\       'vim': {
+			\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+			\       },
+			\       'html': {
+			\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+			\       },
+			\       'css': 0,
+			\   }
+			\}
