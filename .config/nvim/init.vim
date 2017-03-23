@@ -23,6 +23,7 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('zchee/deoplete-go', {'build': 'make'})
 	call dein#add('zchee/deoplete-jedi')
 	call dein#add('davidhalter/jedi-vim')
+"	call dein#add('c0r73x/neotags.nvim')
 
 	" Color SCHEME
 	call dein#add('altercation/vim-colors-solarized')
@@ -49,7 +50,7 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('chrisbra/csv.vim')
 	call dein#add('Chiel92/vim-autoformat')
 	call dein#add('nvie/vim-flake8')
-	call dein#add('fholgado/minibufexpl.vim')
+"	call dein#add('fholgado/minibufexpl.vim')
 
 	" Required:
 	call dein#end()
@@ -75,27 +76,39 @@ nnoremap <leader><leader> :w<cr>
 
 
 set completeopt+=noselect
+
+" Fast move
 set number
 set relativenumber
+
+" Autoreload changed files
+set autoread
+
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
+
 " toggle invisible characters
 set list
 set tabstop=4
 set shiftwidth=4
 set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
-" ---------------
+
 " Search settings
-" ---------------
 set ignorecase
 set smartcase
 set incsearch
 
+
+nnoremap b, :bp<CR>
+nnoremap b. :bn<CR>
+
 let g:python3_host_prog  = '/usr/bin/python'
+let g:python_host_prog  = '/usr/bin/python2'
 " Skip the check of neovim module
-let g:python3_host_skip_check = 1
+"let g:python3_host_skip_check = 1
+
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
 let g:deoplete#sources#jedi#show_docstring = 1 "check this
@@ -111,6 +124,7 @@ let g:nerdtree_tabs_open_on_console_startup=1
 let g:formatters_js = ['js-beautify']
 let g:formatters_css = ['css-beautify']
 
+let g:neotags_enabled = 1
 "--------------------------------------------------
 " vim-go
 "--------------------------------------------------
@@ -182,7 +196,7 @@ augroup END
 " Theme config
 colorscheme molokai
 let g:airline_theme='molokai'
-
+let g:airline#extensions#tabline#enabled = 1
 
 
 "------------------------------------------------------------------------------
