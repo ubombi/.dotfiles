@@ -19,6 +19,7 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('Shougo/neosnippet-snippets')
 	" My Plugin list
 	call dein#add('fatih/vim-go.git')
+	call dein#add('jodosha/vim-godebug')
 	call dein#add('Shougo/deoplete.nvim')
 	call dein#add('zchee/deoplete-go', {'build': 'make'})
 	call dein#add('zchee/deoplete-jedi')
@@ -29,15 +30,20 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('altercation/vim-colors-solarized')
 	call dein#add('fatih/molokai')
 
+	" Syntax
+	call dein#add('sheerun/vim-polyglot')
+
 	call dein#add('scrooloose/nerdcommenter')
 	call dein#add('scrooloose/nerdtree')
 	call dein#add('jistr/vim-nerdtree-tabs')
 	call dein#add('majutsushi/tagbar')
+	call dein#add('kien/ctrlp.vim')
 
 	"GIT
 	call dein#add('airblade/vim-gitgutter')
 	call dein#add('tpope/vim-fugitive')
 	call dein#add('Xuyuanp/nerdtree-git-plugin')
+	call dein#add('int3/vim-extradite')
 
 	"Status line
 	call dein#add('vim-airline/vim-airline')
@@ -76,7 +82,7 @@ nnoremap <leader><leader> :w<cr>
 
 
 set completeopt+=noselect
-
+set mouse=a
 " Fast move
 set number
 set relativenumber
@@ -133,7 +139,7 @@ augroup filetype-go
 	autocmd FileType go setlocal tabstop=4
 	autocmd FileType go setlocal shiftwidth=4
 	autocmd FileType go let g:auto_ctags = 1
-	autocmd FileType go let g:go_fmt_fail_silently = 1
+	"autocmd FileType go let g:go_fmt_fail_silently = 1
 	autocmd FileType go let g:go_highlight_functions = 1
 	autocmd FileType go let g:go_highlight_methods = 1
 	autocmd FileType go let g:go_highlight_structs = 1
@@ -146,15 +152,24 @@ augroup filetype-go
 	autocmd FileType go let g:deoplete#sources#go#pointer = 1
 	autocmd FileType go let g:deoplete#sources#go#use_cache = 1
 	autocmd FileType go let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
+
+	let g:go_metalinter_excludes = ['dupl', 'gas', 'errcheck', 'gotype']
+	let g:go_metalinter_deadline = '1500s'
+	"
+	let g:syntastic_go_checkers = ['golint', 'govet', 'gometalinter']
+	let g:syntastic_go_gometalinter_args = ['--disable-all', '--enable=errcheck']
+	let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 	"    autocmd FileType go let g:deoplete#sources#go#cgo = 1
 
 	autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
+	autocmd FileType go nmap <leader>rd :w<cr>:GoDebug<cr>
 	autocmd FileType go nmap <leader>b <Plug>(go-build)
 	autocmd FileType go nmap <leader>tr <Plug>(go-test)
 	autocmd FileType go nmap <leader>tf <Plug>(go-test-func)
 	autocmd FileType go nmap <leader>c <Plug>(go-coverage)
 
 	autocmd FileType go nmap <Leader>df <Plug>(go-def)
+	autocmd FileType go nmap <Leader>g <Plug>(go-def)
 	autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
 	autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 	autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
@@ -165,6 +180,7 @@ augroup filetype-go
 	autocmd FileType go nmap <Leader>s <Plug>(go-implements)
 	autocmd FileType go nmap <Leader>i <Plug>(go-info)
 	autocmd FileType go nmap <Leader>e <Plug>(go-rename)
+	autocmd FileType go nmap <Leader>br :GoToggleBreakpoint<cr>
 
 	autocmd FileType go hi goErr term=bold ctermfg=13 gui=bold guifg=#ef5939
 	autocmd FileType go :highlight goErr cterm=bold ctermfg=202

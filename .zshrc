@@ -84,3 +84,11 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+#export $GOPATH = $HOME/go
+export GOPATH=$(go env GOPATH)
+export PATH=$PATH:$GOPATH/bin
+
+
+
+eval $(thefuck --alias)
