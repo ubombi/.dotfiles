@@ -1,8 +1,36 @@
-"dein Scripts-----------------------------
 if &compatible
 	set nocompatible               " Be iMproved
 endif
+let mapleader = ","
+nnoremap <leader><leader> :w<cr>
 
+set hidden
+set completeopt+=noselect
+set mouse=a
+" Fast move
+set number
+set relativenumber
+
+" Autoreload changed files
+set autoread
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" toggle invisible characters
+set list
+set tabstop=4
+set shiftwidth=4
+set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+
+" Search settings
+set ignorecase
+set smartcase
+set incsearch
+
+"dein Scripts-----------------------------
 " Required:
 set runtimepath+=~/.nvim-package-control/repos/github.com/Shougo/dein.vim
 
@@ -24,13 +52,14 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('zchee/deoplete-go', {'build': 'make'})
 	call dein#add('zchee/deoplete-jedi')
 	call dein#add('davidhalter/jedi-vim')
-"	call dein#add('c0r73x/neotags.nvim')
+	call dein#add('vim-ctrlspace/vim-ctrlspace')
 
 	" Color SCHEME
 	call dein#add('altercation/vim-colors-solarized')
 	call dein#add('fatih/molokai')
 
 	" Syntax
+	call dein#add('vim-syntastic/syntastic')
 	call dein#add('sheerun/vim-polyglot')
 
 	call dein#add('scrooloose/nerdcommenter')
@@ -42,6 +71,7 @@ if dein#load_state('~/.nvim-package-control')
 	"GIT
 	call dein#add('airblade/vim-gitgutter')
 	call dein#add('tpope/vim-fugitive')
+	call dein#add('idanarye/vim-merginal')
 	call dein#add('Xuyuanp/nerdtree-git-plugin')
 	call dein#add('int3/vim-extradite')
 
@@ -74,38 +104,6 @@ endif
 
 "End dein Scripts-------------------------
 
-""""""""""""""
-" Leader key "
-""""""""""""""
-let mapleader = ","
-nnoremap <leader><leader> :w<cr>
-
-
-set completeopt+=noselect
-set mouse=a
-" Fast move
-set number
-set relativenumber
-
-" Autoreload changed files
-set autoread
-
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
-
-" toggle invisible characters
-set list
-set tabstop=4
-set shiftwidth=4
-set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
-set showbreak=↪
-
-" Search settings
-set ignorecase
-set smartcase
-set incsearch
-
 
 nnoremap b, :bp<CR>
 nnoremap b. :bn<CR>
@@ -118,6 +116,12 @@ let g:python_host_prog  = '/usr/bin/python2'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
 let g:deoplete#sources#jedi#show_docstring = 1 "check this
+call deoplete#custom#set('buffer', 'rank', 99)
+
+" CtrlSpace
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+nnoremap <silent><C-p> :CtrlSpace O<CR>
+set showtabline=0
 
 let g:rainbow_active = 1
 let g:AutoPairsFlyMode = 0
@@ -126,9 +130,21 @@ let g:AutoPairsFlyMode = 0
 let g:autoformat_verbosemode=0
 " TABS
 let g:nerdtree_tabs_open_on_console_startup=1
+let g:syntastic_aggregate_errors = 1
 
 let g:formatters_js = ['js-beautify']
 let g:formatters_css = ['css-beautify']
+
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['go', 'python']}
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 let g:neotags_enabled = 1
 "--------------------------------------------------
@@ -144,7 +160,10 @@ augroup filetype-go
 	autocmd FileType go let g:go_highlight_methods = 1
 	autocmd FileType go let g:go_highlight_structs = 1
 	autocmd FileType go let g:go_highlight_operators = 1
+	autocmd FileType go let g:go_highlight_extra_types = 1
 	autocmd FileType go let g:go_highlight_build_constraints = 1
+	autocmd FileType go let g:go_auto_sameids = 1
+	autocmd FileType go let g:go_auto_type_info = 1
 	autocmd FileType go let g:go_play_open_browser = 1
 	autocmd FileType go let g:go_fmt_command = 'goimports'
 	autocmd FileType go let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
@@ -157,8 +176,8 @@ augroup filetype-go
 	let g:go_metalinter_deadline = '1500s'
 	"
 	let g:syntastic_go_checkers = ['golint', 'govet', 'gometalinter']
-	let g:syntastic_go_gometalinter_args = ['--disable-all', '--enable=errcheck']
-	let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+	let g:syntastic_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=gocyclo', '--enable=staticcheck', '--enable=gosimple']
+	"let g:syntastic_mode_map = { 'mode': 'passive' }
 	"    autocmd FileType go let g:deoplete#sources#go#cgo = 1
 
 	autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
@@ -212,7 +231,7 @@ augroup END
 " Theme config
 colorscheme molokai
 let g:airline_theme='molokai'
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 
 
 "------------------------------------------------------------------------------
@@ -236,8 +255,9 @@ let NERDTreeAutoCenter = 1
 " Locate file in hierarchy quickly
 map <leader>T :NERDTreeFind<cr>
 " Toogle on/off
-nmap <leader>o :NERDTreeToggle<cr>
-nmap <leader>l :TagbarToggle<cr>
+noremap <leader>o :NERDTreeToggle<cr>
+noremap <leader>l :TagbarToggle<cr>
+noremap <leader>m :MerginalToggle<cr>
 
 
 noremap <F3> :Autoformat<CR>
