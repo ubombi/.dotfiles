@@ -86,6 +86,7 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 #export $GOPATH = $HOME/go
+export GOROOT=$(go env GOROOT)
 export GOPATH=$(go env GOPATH)
 export PATH=$PATH:$GOPATH/bin
 

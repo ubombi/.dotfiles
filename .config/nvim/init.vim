@@ -59,7 +59,8 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('fatih/molokai')
 
 	" Syntax
-	call dein#add('vim-syntastic/syntastic')
+	"call dein#add('vim-syntastic/syntastic')
+	call dein#add('neomake/neomake')
 	call dein#add('sheerun/vim-polyglot')
 
 	call dein#add('scrooloose/nerdcommenter')
@@ -87,8 +88,13 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('Chiel92/vim-autoformat')
 	call dein#add('nvie/vim-flake8')
 "	call dein#add('fholgado/minibufexpl.vim')
+" JavaScript
+	call dein#add('mxw/vim-jsx')
+	call dein#add('jelera/vim-javascript-syntax')
+	call dein#add('ap/vim-css-color')
+	
 
-	" Required:
+" Required:
 	call dein#end()
 	call dein#save_state()
 endif
@@ -175,10 +181,10 @@ augroup filetype-go
 	let g:go_metalinter_excludes = ['dupl', 'gas', 'errcheck', 'gotype']
 	let g:go_metalinter_deadline = '1500s'
 	"
-	let g:syntastic_go_checkers = ['golint', 'govet', 'gometalinter']
-	let g:syntastic_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=gocyclo', '--enable=staticcheck', '--enable=gosimple']
-	"let g:syntastic_mode_map = { 'mode': 'passive' }
-	"    autocmd FileType go let g:deoplete#sources#go#cgo = 1
+	"let g:syntastic_go_checkers 
+	"let g:syntastic_go_gometalinter_args
+	let g:neomake_go_makers = ['golint', 'govet', 'gometalinter']
+	let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=gocyclo', '--enable=staticcheck', '--enable=gosimple']
 
 	autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
 	autocmd FileType go nmap <leader>rd :w<cr>:GoDebug<cr>
@@ -227,6 +233,7 @@ augroup python
 	autocmd BufWritePost *.py call Flake8()
 augroup END
 
+autocmd! BufWritePost * Neomake
 
 " Theme config
 colorscheme molokai
@@ -295,3 +302,8 @@ let g:rainbow_conf = {
 			\       'css': 0,
 			\   }
 			\}
+
+
+" JavaScript
+let g:neomake_javascript_enabled_makers = ['jshint', 'jslint', 'jsxhint']
+"let g:neomake_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
