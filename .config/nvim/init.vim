@@ -7,10 +7,14 @@ nnoremap <leader><leader> :w<cr>
 set hidden
 set completeopt+=noselect
 set mouse=a
+"Highlight current line
+set cursorline
 " Fast move
 set number
 set relativenumber
 
+"Don't redraw while executing macros
+set lazyredraw
 " Autoreload changed files
 set autoread
 
@@ -25,10 +29,26 @@ set shiftwidth=4
 set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
+
+"Allow incr/decr (^A, ^X)
+set nrformats=octal,hex,alpha
+
+" FONT
+"set anti enc=utf-8
+"call GuiFont Source\ Code\ Pro\ Bold\ 11
+
 " Search settings
 set ignorecase
 set smartcase
 set incsearch
+
+
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+" set nobackup
+" set nowb
+" set noswapfile
+
 
 "dein Scripts-----------------------------
 " Required:
@@ -307,3 +327,35 @@ let g:rainbow_conf = {
 " JavaScript
 let g:neomake_javascript_enabled_makers = ['jshint', 'jslint', 'jsxhint']
 "let g:neomake_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
+
+
+
+
+"Go TagBar
+let g:tagbar_type_go = {  
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
