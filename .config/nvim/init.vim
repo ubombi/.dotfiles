@@ -73,6 +73,9 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('zchee/deoplete-jedi')
 	call dein#add('davidhalter/jedi-vim')
 	call dein#add('vim-ctrlspace/vim-ctrlspace')
+	
+	" Sublime milticursors
+	call dein#add('terryma/vim-multiple-cursors') 
 
 	" Color SCHEME
 	call dein#add('altercation/vim-colors-solarized')
@@ -96,6 +99,8 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('Xuyuanp/nerdtree-git-plugin')
 	call dein#add('int3/vim-extradite')
 
+	"Go
+	call dein#add('buoto/gotests-vim')
 	"Status line
 	call dein#add('vim-airline/vim-airline')
 	call dein#add('vim-airline/vim-airline-themes')
@@ -200,6 +205,7 @@ augroup filetype-go
 
 	let g:go_metalinter_excludes = ['dupl', 'gas', 'errcheck', 'gotype']
 	let g:go_metalinter_deadline = '1500s'
+	let g:go_list_type = "quickfix"
 	"
 	"let g:syntastic_go_checkers 
 	"let g:syntastic_go_gometalinter_args
@@ -288,6 +294,9 @@ noremap <leader>m :MerginalToggle<cr>
 
 
 noremap <F3> :Autoformat<CR>
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 " --------------------------------------
 " Navigate between split windows quickly
@@ -359,3 +368,18 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
+
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
+endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
+endfunction
