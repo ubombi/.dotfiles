@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/vkozlo/.oh-my-zsh
+  export ZSH=~/.oh-my-zsh
   DISABLE_UPDATE_PROMPT=true
 
 # Set name of the theme to load. Optionally, if you set this to "random"
@@ -93,3 +93,15 @@ export PATH=$PATH:$GOPATH/bin
 
 
 eval $(thefuck --alias)
+alias denv='eval $(docker-machine env localenv)'
+
+# Usefull for work reporting
+# TODO: intergation with GIT
+func lg(){
+if [ "${1}" = "flush" ]; then
+	cat ~/.work.log
+	echo '' > ~/.work.log
+else
+	echo " -${@}" >> ~/.work.log
+fi
+}

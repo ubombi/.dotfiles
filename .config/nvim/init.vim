@@ -139,8 +139,8 @@ endif
 nnoremap b, :bp<CR>
 nnoremap b. :bn<CR>
 
-let g:python3_host_prog  = '/usr/bin/python'
-let g:python_host_prog  = '/usr/bin/python2'
+"let g:python3_host_prog  = '/usr/bin/python'
+"let g:python_host_prog  = '/usr/bin/python2'
 " Skip the check of neovim module
 "let g:python3_host_skip_check = 1
 
