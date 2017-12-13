@@ -146,7 +146,7 @@ nnoremap b. :bn<CR>
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
-let g:deoplete#sources#jedi#show_docstring = 1 "check this
+let g:deoplete#sources#jedi#show_docstring = 0 "check this
 call deoplete#custom#set('buffer', 'rank', 99)
 
 " CtrlSpace
@@ -161,6 +161,8 @@ let g:AutoPairsFlyMode = 0
 let g:autoformat_verbosemode=0
 " TABS
 let g:nerdtree_tabs_open_on_console_startup=1
+let g:airline#extensions#tabline#enabled = 1 " ??
+
 let g:syntastic_aggregate_errors = 1
 
 let g:formatters_js = ['js-beautify']
@@ -264,7 +266,7 @@ autocmd! BufWritePost * Neomake
 " Theme config
 colorscheme molokai
 let g:airline_theme='molokai'
-let g:airline#extensions#tabline#enabled = 0
+"let g:airline#extensions#tabline#enabled = 0
 
 
 "------------------------------------------------------------------------------
@@ -279,8 +281,12 @@ let NERDTreeWinSize = 35
 
 " Make sure that when NT root is changed, Vim's pwd is also updated
 let NERDTreeChDirMode = 2
-let NERDTreeShowLineNumbers = 0
+let NERDTreeShowLineNumbers = 1
 let NERDTreeAutoCenter = 1
+let g:nerdtree_tabs_open_on_console_startup = 0
+
+nnoremap <Left> :tabprevious<cr>
+nnoremap <right> :tabnext<cr>
 
 " Open NERDTree on startup, when no file has been specified
 " autocmd VimEnter * if !argc() | NERDTree | endif
