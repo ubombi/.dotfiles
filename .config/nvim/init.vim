@@ -34,10 +34,6 @@ autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
 "Allow incr/decr (^A, ^X)
 set nrformats=octal,hex,alpha
 
-" FONT
-"set anti enc=utf-8
-"call GuiFont Source\ Code\ Pro\ Bold\ 11
-
 " Search settings
 set ignorecase
 set smartcase
@@ -82,7 +78,6 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('fatih/molokai')
 
 	" Syntax
-	"call dein#add('vim-syntastic/syntastic')
 	call dein#add('neomake/neomake')
 	call dein#add('sheerun/vim-polyglot')
 
@@ -136,8 +131,6 @@ endif
 "End dein Scripts-------------------------
 
 
-nnoremap b, :bp<CR>
-nnoremap b. :bn<CR>
 
 "let g:python3_host_prog  = '/usr/bin/python'
 "let g:python_host_prog  = '/usr/bin/python2'
@@ -264,7 +257,9 @@ augroup END
 autocmd! BufWritePost * Neomake
 
 " Theme config
-colorscheme molokai
+set background=dark
+colorscheme solarized
+"colorscheme molokai
 let g:airline_theme='molokai'
 "let g:airline#extensions#tabline#enabled = 0
 
@@ -277,16 +272,13 @@ let g:airline_theme='molokai'
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeIgnore=['\.o$', '\.pyc$', '\.php\~$']
-let NERDTreeWinSize = 35
+let NERDTreeWinSize = 40
 
 " Make sure that when NT root is changed, Vim's pwd is also updated
 let NERDTreeChDirMode = 2
 let NERDTreeShowLineNumbers = 1
 let NERDTreeAutoCenter = 1
 let g:nerdtree_tabs_open_on_console_startup = 0
-
-nnoremap <Left> :tabprevious<cr>
-nnoremap <right> :tabnext<cr>
 
 " Open NERDTree on startup, when no file has been specified
 " autocmd VimEnter * if !argc() | NERDTree | endif
@@ -305,14 +297,31 @@ map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
 " --------------------------------------
+
+"Few ways to switch tabs/buffers. (TODO: check most comfortable)
+nnoremap <Up> :cprevious<cr>
+nnoremap <Down> :cnext<cr>
+
+nnoremap <Right>  :bn<cr>
+nnoremap <Left> :bp<cr>
+
+nnoremap < :bp<CR>
+nnoremap > :bn<CR>
+
+nnoremap <c-,> :tabprevious<CR>
+nnoremap <c-.> :tabnext<CR>
+
+nnoremap <leader>p :tabprevious<cr>
+nnoremap <leader>n :tabnext<cr>
+
+nnoremap ? :help 
+
 " Navigate between split windows quickly
-" --------------------------------------
-"
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 nnoremap <c-h> <c-w><c-h>
-
+" --------------------------------------
 
 
 let g:rainbow_conf = {
