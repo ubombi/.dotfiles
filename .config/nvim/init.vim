@@ -1,12 +1,20 @@
 if &compatible
 	set nocompatible               " Be iMproved
 endif
+
+
+function! MyOnBattery()
+  return readfile('/sys/class/power_supply/ADP0/online') == ['0']
+endfunction
+
+
 let mapleader = ","
-nnoremap <leader><leader> :w<cr>
+"nnoremap <leader><leader> :w<cr>
 
 set hidden
 set completeopt+=noselect
 set mouse=a
+
 "Highlight current line
 set cursorline
 " Fast move
@@ -29,7 +37,6 @@ set shiftwidth=4
 set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 
-autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
 
 "Allow incr/decr (^A, ^X)
 set nrformats=octal,hex,alpha
@@ -38,7 +45,8 @@ set nrformats=octal,hex,alpha
 set ignorecase
 set smartcase
 set incsearch
-
+" Load local configs
+set exrc
 
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 " set nobackup
@@ -56,35 +64,43 @@ if dein#load_state('~/.nvim-package-control')
 
 	" Let dein manage dein
 	" Required:
-	call dein#add('~/.nvim-package-control/repos/github.com/Shougo/dein.vim')
+	call dein#add('Shougo/dein.vim')
 
 	" Add or remove your plugins here:
 	call dein#add('Shougo/neosnippet.vim')
 	call dein#add('Shougo/neosnippet-snippets')
 	" My Plugin list
 	call dein#add('fatih/vim-go.git')
-	call dein#add('jodosha/vim-godebug')
+	call dein#add('ubombi/vim-godebug') " vim-go can debug
 	call dein#add('Shougo/deoplete.nvim')
+	"call dein#add('nsf/gocode', {'rtp': 'nvim/'})
+	"call dein#add('mdempsky/gocode', {'rtp': 'nvim'})
 	call dein#add('zchee/deoplete-go', {'build': 'make'})
+
+	call dein#add('zchee/deoplete-clang')
+	"call dein#add('Shougo/neoinclude.vim')
+
 	call dein#add('zchee/deoplete-jedi')
-	call dein#add('davidhalter/jedi-vim')
 	call dein#add('vim-ctrlspace/vim-ctrlspace')
 	
 	" Sublime milticursors
-	call dein#add('terryma/vim-multiple-cursors') 
+	"call dein#add('terryma/vim-multiple-cursors') 
 
 	" Color SCHEME
 	call dein#add('altercation/vim-colors-solarized')
-	call dein#add('fatih/molokai')
+	"call dein#add('fatih/molokai')
 
 	" Syntax
 	call dein#add('neomake/neomake')
 	call dein#add('sheerun/vim-polyglot')
+	"call dein#add('dylon/vim-antlr') " .g .g4 antlr syntax
 
 	call dein#add('scrooloose/nerdcommenter')
 	call dein#add('scrooloose/nerdtree')
 	call dein#add('jistr/vim-nerdtree-tabs')
 	call dein#add('majutsushi/tagbar')
+
+	" CTRL + P
 	call dein#add('kien/ctrlp.vim')
 
 	"GIT
@@ -94,24 +110,30 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('Xuyuanp/nerdtree-git-plugin')
 	call dein#add('int3/vim-extradite')
 
-	"Go
+	"Go test generator
 	call dein#add('buoto/gotests-vim')
+	"
 	"Status line
 	call dein#add('vim-airline/vim-airline')
 	call dein#add('vim-airline/vim-airline-themes')
 
-	" You can specify revision/branch/tag.
-	call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+	call dein#add('Shougo/deol.nvim')
+	" Kind a usefull
 	call dein#add('jiangmiao/auto-pairs')
+
+	" Colorfull brackets.
 	call dein#add('luochen1990/rainbow')
+
 	call dein#add('chrisbra/csv.vim')
 	call dein#add('Chiel92/vim-autoformat')
-	call dein#add('nvie/vim-flake8')
+	"call dein#add('nvie/vim-flake8')
 "	call dein#add('fholgado/minibufexpl.vim')
-" JavaScript
-	call dein#add('mxw/vim-jsx')
-	call dein#add('jelera/vim-javascript-syntax')
-	call dein#add('ap/vim-css-color')
+
+
+	" JavaScript
+	"call dein#add('mxw/vim-jsx')
+	"call dein#add('jelera/vim-javascript-syntax')
+	"call dein#add('ap/vim-css-color')
 	
 
 " Required:
@@ -132,15 +154,32 @@ endif
 
 
 
-"let g:python3_host_prog  = '/usr/bin/python'
-"let g:python_host_prog  = '/usr/bin/python2'
+let g:python3_host_prog  = '/usr/bin/python'
+let g:python_host_prog  = '/usr/bin/python2'
 " Skip the check of neovim module
-"let g:python3_host_skip_check = 1
+let g:python3_host_skip_check = 1
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
 let g:deoplete#sources#jedi#show_docstring = 0 "check this
-call deoplete#custom#set('buffer', 'rank', 99)
+"call deoplete#custom#set('buffer', 'rank', 99)
+"
+" deoplete-go
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
+"let g:godebug_breakpoints_file = '~/.dlv_breakpoints
+let g:deoplete#disable_auto_complete = 0
+"
+" Enable TCP socket on nmdempscki gocode. [none, unix, tcp]
+let g:deoplete#sources#go#gocode_sock = 'tcp'
+"let g:deoplete#sources#go#source_importer = 1
+let g:deoplete#sources#go#auto_goos = 1
+let g:deoplete#sources#go#pointer = 1
+
+let g:go_gocode_propose_builtins = 1
+let g:go_gocode_unimported_packages = 1
 
 " CtrlSpace
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
@@ -148,10 +187,14 @@ nnoremap <silent><C-p> :CtrlSpace O<CR>
 set showtabline=0
 
 let g:rainbow_active = 1
+
+" Try it
 let g:AutoPairsFlyMode = 0
+
 
 " AutoFormatter
 let g:autoformat_verbosemode=0
+"
 " TABS
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:airline#extensions#tabline#enabled = 1 " ??
@@ -173,11 +216,77 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:neotags_enabled = 1
+
+au BufRead,BufNewFile *.g set filetype=antlr3
+au BufRead,BufNewFile *.g4 set filetype=antlr4
+
+" NeoMake powersaving config
+
+let g:neomake_go_gocritic_maker = {
+        \ 'exe': 'gocritic',
+        \ 'args': ['check-project'],
+		\ 'append_file': 0,
+        \ }
+        "\ 'errorformat': '%f:%l:%c: %m',
+
+let g:neomake_open_list = 2
+
+let g:neomake_go_makers = ['golint', 'govet', 'gometalinter', 'gocritic','prealloc']
+let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=gocyclo', '--enable=staticcheck', '--enable=gosimple']
+"let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=staticcheck', '--enable=gosimple']
+
+let g:neomake_javascript_enabled_makers = ['jshint', 'jslint', 'jsxhint']
+
+if MyOnBattery()
+  call neomake#configure#automake('w')
+else
+  call neomake#configure#automake('nw', 500)
+endif
+
+
+
 "--------------------------------------------------
 " vim-go
 "--------------------------------------------------
+"function! s:go_guru_scope_from_git_root()
+  "let gitroot = system("git rev-parse --show-toplevel | tr -d '\n'")
+  "let pattern = escape(go#util#gopath() . "/src/", '\ /')
+  ""return substitute(gitroot, pattern, "", "") . "/..."
+  "return substitute(gitroot, pattern, "", "") . "/... -vendor/"
+"endfunction
+
+" from https://gist.github.com/tyru/984296
+" Substitute a:from => a:to by string.
+" To substitute by pattern, use substitute() instead.
+function! s:substring(str, from, to)
+  if a:str ==# '' || a:from ==# ''
+      return a:str
+  endif
+  let str = a:str
+  let idx = stridx(str, a:from)
+  while idx !=# -1
+      let left  = idx ==# 0 ? '' : str[: idx - 1]
+      let right = str[idx + strlen(a:from) :]
+      let str = left . a:to . right
+      let idx = stridx(str, a:from)
+  endwhile
+  return str
+endfunction
+
+function! s:chomp(string)
+  return substitute(a:string, '\n\+$', '', '')
+endfunction
+
+function! s:go_guru_scope_from_git_root()
+" chomp because get rev-parse returns line with newline at the end
+  return s:chomp(s:substring(system("git rev-parse --show-toplevel"),$GOPATH . "/src/","")) . "/..."
+endfunction
+
+
+
 augroup filetype-go
 	autocmd!
+	autocmd FileType go silent exe "GoGuruScope " . s:go_guru_scope_from_git_root()
 	autocmd FileType go setlocal tabstop=4
 	autocmd FileType go setlocal shiftwidth=4
 	autocmd FileType go let g:auto_ctags = 1
@@ -192,20 +301,13 @@ augroup filetype-go
 	autocmd FileType go let g:go_auto_type_info = 1
 	autocmd FileType go let g:go_play_open_browser = 1
 	autocmd FileType go let g:go_fmt_command = 'goimports'
-	autocmd FileType go let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-	autocmd FileType go let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-	autocmd FileType go let g:deoplete#sources#go#pointer = 1
-	autocmd FileType go let g:deoplete#sources#go#use_cache = 1
-	autocmd FileType go let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
 
-	let g:go_metalinter_excludes = ['dupl', 'gas', 'errcheck', 'gotype']
+	"let g:go_metalinter_excludes = ['dupl', 'gas', 'errcheck', 'gotype']
 	let g:go_metalinter_deadline = '1500s'
 	let g:go_list_type = "quickfix"
 	"
 	"let g:syntastic_go_checkers 
 	"let g:syntastic_go_gometalinter_args
-	let g:neomake_go_makers = ['golint', 'govet', 'gometalinter']
-	let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=gocyclo', '--enable=staticcheck', '--enable=gosimple']
 
 	autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
 	autocmd FileType go nmap <leader>rd :w<cr>:GoDebug<cr>
@@ -254,13 +356,13 @@ augroup python
 	autocmd BufWritePost *.py call Flake8()
 augroup END
 
-autocmd! BufWritePost * Neomake
+"autocmd! BufWritePost * Neomake
 
 " Theme config
 set background=dark
 colorscheme solarized
 "colorscheme molokai
-let g:airline_theme='molokai'
+let g:airline_theme='solarized'
 "let g:airline#extensions#tabline#enabled = 0
 
 
@@ -305,8 +407,8 @@ nnoremap <Down> :cnext<cr>
 nnoremap <Right>  :bn<cr>
 nnoremap <Left> :bp<cr>
 
-nnoremap < :bp<CR>
-nnoremap > :bn<CR>
+"nnoremap < :bp<CR>
+"nnoremap > :bn<CR>
 
 nnoremap <c-,> :tabprevious<CR>
 nnoremap <c-.> :tabnext<CR>
@@ -349,7 +451,7 @@ let g:rainbow_conf = {
 
 
 " JavaScript
-let g:neomake_javascript_enabled_makers = ['jshint', 'jslint', 'jsxhint']
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
 "let g:neomake_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
 
 
@@ -398,3 +500,25 @@ function! Multiple_cursors_after()
     exe 'NeoCompleteUnlock'
   endif
 endfunction
+
+
+
+" NeoSnippet Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif

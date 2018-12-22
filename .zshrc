@@ -52,7 +52,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git, pyenv, golang, python, redis-cli, systemd, virtualenv)
+plugins=(vi-mode, git, pyenv, golang, python, redis-cli, systemd, virtualenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -64,11 +64,10 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='nvim'
-fi
+#if [[ -n $SSH_CONNECTION ]]; then
+export EDITOR='nvim'
+#else
+#fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -90,18 +89,43 @@ export GOROOT=$(go env GOROOT)
 export GOPATH=$(go env GOPATH)
 export PATH=$PATH:$GOPATH/bin
 
-
+# Expressif
+export PATH="$PATH:$HOME/esp/xtensa-esp32-elf/bin"
+export IDF_PATH="$HOME/esp/esp-idf"
+export IOT_SOLUTION_PATH="$HOME/esp/esp-iot-solution"
+export IOT_MEDIA_PATH="$HOME/esp/esp-mdf"
+export IOT_EXTERNAL_PATH="$HOME/esp/external"
 
 eval $(thefuck --alias)
-alias denv='eval $(docker-machine env localenv)'
 
-# Usefull for work reporting
-# TODO: intergation with GIT
-func lg(){
-if [ "${1}" = "flush" ]; then
-	cat ~/.work.log
-	echo '' > ~/.work.log
-else
-	echo " -${@}" >> ~/.work.log
-fi
+
+bindkey -v
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+#bindkey '^?' backward-delete-char
+#bindkey '^h' backward-delete-char
+#bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+
+function zle-line-init zle-keymap-select {
+	RPS1="%F{yellow}${${KEYMAP/vicmd/N}/(main|viins)/I}%f"
+    RPS2=$RPS1
+    zle reset-prompt
 }
+
+zle -N zle-line-init
+zle -N zle-keymap-select
+export KEYTIMEOUT=1
+if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
+if [ /usr/local/bin/minikube ]; then source <(minikube completion zsh); fi
+if [ /usr/local/bin/kubeadm ]; then source <(kubeadm completion zsh); fi
+
+
+
+
+#/.:/home/guru:/usr
+export CDPATH=".:~/:$GOPATH/src/github.com/ubombi:$GOPATH/src/"
+
+alias dexec='docker exec -it -e COLUMNS="$(tput cols)" -e LINES="$(tput lines)"'  
