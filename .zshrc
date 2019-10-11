@@ -52,7 +52,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode, git, pyenv, golang, python, redis-cli, systemd, virtualenv)
+plugins=(vi-mode git pyenv golang python redis-cli systemd virtualenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -118,7 +118,7 @@ zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
 if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
-if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
+#if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
 if [ /usr/local/bin/minikube ]; then source <(minikube completion zsh); fi
 if [ /usr/local/bin/kubeadm ]; then source <(kubeadm completion zsh); fi
 
@@ -126,6 +126,6 @@ if [ /usr/local/bin/kubeadm ]; then source <(kubeadm completion zsh); fi
 
 
 #/.:/home/guru:/usr
-export CDPATH=".:~/:$GOPATH/src/github.com/ubombi:$GOPATH/src/"
+export CDPATH=".:~/:$GOPATH/src/github.com/ubombi:$GOPATH/src/:~/py/:~/py/github.com/ubombi"
 
 alias dexec='docker exec -it -e COLUMNS="$(tput cols)" -e LINES="$(tput lines)"'  

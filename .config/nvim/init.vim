@@ -20,6 +20,7 @@ set cursorline
 " Fast move
 set number
 set relativenumber
+let g:line_number_interval#enable_at_startup = 1
 
 "Don't redraw while executing macros
 set lazyredraw
@@ -49,18 +50,19 @@ set incsearch
 set exrc
 
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
-" set nobackup
-" set nowb
-" set noswapfile
+ set nobackup
+ set nowb
+ set noswapfile
 
+ "let g:solarized_termcolors=256
 
 "dein Scripts-----------------------------
 " Required:
-set runtimepath+=~/.nvim-package-control/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('~/.nvim-package-control')
-	call dein#begin('~/.nvim-package-control')
+if dein#load_state('~/.cache/dein')
+	call dein#begin('~/.cache/dein')
 
 	" Let dein manage dein
 	" Required:
@@ -81,6 +83,7 @@ if dein#load_state('~/.nvim-package-control')
 	"call dein#add('Shougo/neoinclude.vim')
 
 	call dein#add('zchee/deoplete-jedi')
+	call dein#add('davidhalter/jedi-vim')
 	call dein#add('vim-ctrlspace/vim-ctrlspace')
 	
 	" Sublime milticursors
@@ -100,8 +103,9 @@ if dein#load_state('~/.nvim-package-control')
 	call dein#add('jistr/vim-nerdtree-tabs')
 	call dein#add('majutsushi/tagbar')
 
-	" CTRL + P
+	"Fast movement
 	call dein#add('kien/ctrlp.vim')
+	call dein#add('IMOKURI/line-number-interval.nvim')
 
 	"GIT
 	call dein#add('airblade/vim-gitgutter')
@@ -126,7 +130,7 @@ if dein#load_state('~/.nvim-package-control')
 
 	call dein#add('chrisbra/csv.vim')
 	call dein#add('Chiel92/vim-autoformat')
-	"call dein#add('nvie/vim-flake8')
+	call dein#add('nvie/vim-flake8')
 "	call dein#add('fholgado/minibufexpl.vim')
 
 
@@ -162,6 +166,7 @@ let g:python3_host_skip_check = 1
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
 let g:deoplete#sources#jedi#show_docstring = 0 "check this
+"autocmd BufWinEnter '__doc__' setlocal bufhidden=delete
 "call deoplete#custom#set('buffer', 'rank', 99)
 "
 " deoplete-go
@@ -180,6 +185,10 @@ let g:deoplete#sources#go#pointer = 1
 
 let g:go_gocode_propose_builtins = 1
 let g:go_gocode_unimported_packages = 1
+
+" Enable GoPlease
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
 " CtrlSpace
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
@@ -206,8 +215,8 @@ let g:formatters_css = ['css-beautify']
 
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['go', 'python']}
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_aggregate_errors = 1
@@ -350,19 +359,25 @@ augroup python
 	au FileType python let g:flake8_show_in_gutter = 1
 	au FileType python nnoremap <leader>r :vsplit<cr> :terminal python %<cr>
 	au FileType python let g:jedi#rename_command = "<leader>e"
+	au FileType python let g:jedi#usages_command = '<Leader>u'
 	au FileType python let g:jedi#use_tabs_not_buffers = 0
 	au FileType python let g:jedi#completions_enabled = 0 " Because of deoplete-jedi
-	autocmd BufWrite *.py :Autoformat
-	autocmd BufWritePost *.py call Flake8()
+	"autocmd BufWrite *.py :Autoformat
+	"autocmd BufWritePost *.py call Flake8()
+	let g:jedi#auto_close_doc = 1
+
+
 augroup END
 
 "autocmd! BufWritePost * Neomake
 
 " Theme config
 set background=dark
-colorscheme solarized
+hi CursorLine   cterm=NONE ctermbg=0 ctermfg=white
+
+"colorscheme solarized
 "colorscheme molokai
-let g:airline_theme='solarized'
+"let g:airline_theme='solarized'
 "let g:airline#extensions#tabline#enabled = 0
 
 
@@ -423,6 +438,9 @@ nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 nnoremap <c-h> <c-w><c-h>
+" rotate fast
+nnoremap <c-r> <c-w><c-r>
+
 " --------------------------------------
 
 
