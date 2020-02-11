@@ -9,7 +9,8 @@
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
-
+PROMPT=$PROMPT'$(kube_ps1) '
+# 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -52,7 +53,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode git pyenv golang python redis-cli systemd virtualenv)
+plugins=(vi-mode git pyenv golang python redis-cli systemd virtualenv kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,15 +118,17 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
-if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
-#if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
-if [ /usr/local/bin/minikube ]; then source <(minikube completion zsh); fi
-if [ /usr/local/bin/kubeadm ]; then source <(kubeadm completion zsh); fi
+
+if [ /usr/bin/kubectl ]; then source <(kubectl completion zsh); fi
+if [ /usr/bin/helm ]; then source <(helm completion zsh); fi
+if [ /usr/bin/minikube ]; then source <(minikube completion zsh); fi
+if [ /usr/bin/kubeadm ]; then source <(kubeadm completion zsh); fi
+if [ $GOPATH/bin/golangci-lint ]; then source <(golangci-lint completion zsh); fi
 
 
 
 
 #/.:/home/guru:/usr
-export CDPATH=".:~/:$GOPATH/src/github.com/ubombi:$GOPATH/src/:~/py/:~/py/github.com/ubombi"
+export CDPATH=".:~/:$GOPATH/src/github.com/ubombi:$GOPATH/src/:~/py/:~/py/github.com/ubombi:~/vcs/"
 
 alias dexec='docker exec -it -e COLUMNS="$(tput cols)" -e LINES="$(tput lines)"'  

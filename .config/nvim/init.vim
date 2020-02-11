@@ -20,6 +20,8 @@ set cursorline
 " Fast move
 set number
 set relativenumber
+set numberwidth=4
+
 let g:line_number_interval#enable_at_startup = 1
 
 "Don't redraw while executing macros
@@ -46,15 +48,19 @@ set nrformats=octal,hex,alpha
 set ignorecase
 set smartcase
 set incsearch
+"
 " Load local configs
 set exrc
+" Disable shell, writes and autocmd in local configs
+set secure
 
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
  set nobackup
  set nowb
  set noswapfile
 
- "let g:solarized_termcolors=256
+"let g:hybrid_custom_term_colors = 1
+"let g:solarized_termcolors=256
 
 "dein Scripts-----------------------------
 " Required:
@@ -75,8 +81,6 @@ if dein#load_state('~/.cache/dein')
 	call dein#add('fatih/vim-go.git')
 	call dein#add('ubombi/vim-godebug') " vim-go can debug
 	call dein#add('Shougo/deoplete.nvim')
-	"call dein#add('nsf/gocode', {'rtp': 'nvim/'})
-	"call dein#add('mdempsky/gocode', {'rtp': 'nvim'})
 	call dein#add('zchee/deoplete-go', {'build': 'make'})
 
 	call dein#add('zchee/deoplete-clang')
@@ -86,11 +90,15 @@ if dein#load_state('~/.cache/dein')
 	call dein#add('davidhalter/jedi-vim')
 	call dein#add('vim-ctrlspace/vim-ctrlspace')
 	
+	" useless
 	" Sublime milticursors
+	"
 	"call dein#add('terryma/vim-multiple-cursors') 
 
+	" Use .Xresources for that
 	" Color SCHEME
-	call dein#add('altercation/vim-colors-solarized')
+	"call dein#add('altercation/vim-colors-solarized')
+	"call dein#add('ubombi/vim-hybrid')
 	"call dein#add('fatih/molokai')
 
 	" Syntax
@@ -178,17 +186,24 @@ let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
 let g:deoplete#disable_auto_complete = 0
 "
 " Enable TCP socket on nmdempscki gocode. [none, unix, tcp]
-let g:deoplete#sources#go#gocode_sock = 'tcp'
+"let g:deoplete#sources#go#gocode_sock = 'tcp'
 "let g:deoplete#sources#go#source_importer = 1
-let g:deoplete#sources#go#auto_goos = 1
-let g:deoplete#sources#go#pointer = 1
+"let g:deoplete#sources#go#auto_goos = 1
+"let g:deoplete#sources#go#pointer = 1
 
 let g:go_gocode_propose_builtins = 1
-let g:go_gocode_unimported_packages = 1
+"let g:go_gocode_unimported_packages = 1
 
 " Enable GoPlease
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
+let g:go_rename_command="gopls"
+let g:go_gopls_complete_unimported = 1
+let g:go_gopls_deep_completion = 1
+let g:go_gopls_fuzzy_matching = 1
+"let g:go_gopls_use_placeholders = 1
+" Some cheat-code for gopls and deoplete
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " CtrlSpace
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
@@ -240,9 +255,34 @@ let g:neomake_go_gocritic_maker = {
 
 let g:neomake_open_list = 2
 
+let g:neomake_go_makers = ['golangci-lint']
+let g:go_metalinter_command = "golangci-lint"
+let g:neomake_go_golangci_lint_args = ['run', '--out-format=line-number', '--print-issued-lines=false', '--disable=gomnd']
 let g:neomake_go_makers = ['golint', 'govet', 'gometalinter', 'gocritic','prealloc']
-let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=gocyclo', '--enable=staticcheck', '--enable=gosimple']
-"let g:neomake_go_gometalinter_args = ['--disable-all', '--enable=errcheck', '--enable=deadcode', '--enable=staticcheck', '--enable=gosimple']
+
+let g:go_metalinter_command = "golangci-lint"
+let g:go_metalinter_enabled = [
+	\ 'deadcode',
+	\ 'errcheck',
+	\ 'gosimple',
+	\ 'govet',
+	\ 'ineffassign',
+	\ 'staticcheck',
+	\ 'structcheck',
+	\ 'typecheck',
+	\ 'unused',
+	\ 'varcheck',
+	\ 'wsl',
+	\ 'maligned',
+	\ 'whitespace',
+	\ 'unparam',
+	\ 'unconvert',
+	\ 'prealloc',
+	\ 'misspell',
+	\ 'interfacer',
+	\ 'gocyclo',
+	\ 'gosec',
+	\ ]
 
 let g:neomake_javascript_enabled_makers = ['jshint', 'jslint', 'jsxhint']
 
@@ -374,9 +414,18 @@ augroup END
 " Theme config
 set background=dark
 hi CursorLine   cterm=NONE ctermbg=0 ctermfg=white
+hi Folded cterm=NONE ctermbg=0
+
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
+
 
 "colorscheme solarized
 "colorscheme molokai
+"colorscheme hybrid
 "let g:airline_theme='solarized'
 "let g:airline#extensions#tabline#enabled = 0
 
@@ -471,7 +520,7 @@ let g:rainbow_conf = {
 " JavaScript
 autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
 "let g:neomake_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
-
+com! FormatJSON %!python -m json.tool
 
 
 
