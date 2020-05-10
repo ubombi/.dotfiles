@@ -17,4 +17,5 @@ export PYTHONDONTWRITEBYTECODE=y
 export TERMINAL="terminator -x"
 export DOWNGRADE_FROM_ALA=1
 alias xclipb='xclip -selection clipboard'
+alias xclipb='xclip -selection clipboard'
 

@@ -297,12 +297,6 @@ endif
 "--------------------------------------------------
 " vim-go
 "--------------------------------------------------
-"function! s:go_guru_scope_from_git_root()
-  "let gitroot = system("git rev-parse --show-toplevel | tr -d '\n'")
-  "let pattern = escape(go#util#gopath() . "/src/", '\ /')
-  ""return substitute(gitroot, pattern, "", "") . "/..."
-  "return substitute(gitroot, pattern, "", "") . "/... -vendor/"
-"endfunction
 
 " from https://gist.github.com/tyru/984296
 " Substitute a:from => a:to by string.
@@ -326,16 +320,11 @@ function! s:chomp(string)
   return substitute(a:string, '\n\+$', '', '')
 endfunction
 
-function! s:go_guru_scope_from_git_root()
-" chomp because get rev-parse returns line with newline at the end
-  return s:chomp(s:substring(system("git rev-parse --show-toplevel"),$GOPATH . "/src/","")) . "/..."
-endfunction
 
 
 
 augroup filetype-go
 	autocmd!
-	autocmd FileType go silent exe "GoGuruScope " . s:go_guru_scope_from_git_root()
 	autocmd FileType go setlocal tabstop=4
 	autocmd FileType go setlocal shiftwidth=4
 	autocmd FileType go let g:auto_ctags = 1

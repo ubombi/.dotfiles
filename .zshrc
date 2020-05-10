@@ -124,6 +124,7 @@ if [ /usr/bin/helm ]; then source <(helm completion zsh); fi
 if [ /usr/bin/minikube ]; then source <(minikube completion zsh); fi
 if [ /usr/bin/kubeadm ]; then source <(kubeadm completion zsh); fi
 if [ $GOPATH/bin/golangci-lint ]; then source <(golangci-lint completion zsh); fi
+if [ /usr/bin/operator-sdk ]; then source <(operator-sdk completion zsh); fi
 
 
 
