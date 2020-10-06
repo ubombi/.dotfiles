@@ -30,8 +30,11 @@ set lazyredraw
 set autoread
 
 " Enable folding
-set foldmethod=indent
+set foldmethod=syntax
 set foldlevel=99
+
+"
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/vendor
 
 " toggle invisible characters
 set list
@@ -39,6 +42,12 @@ set tabstop=4
 set shiftwidth=4
 set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
+
+" quickfix window
+" fast exit/close
+nmap <ESC><ESC> :ccl<CR>
+" do not resize after closing quickfix
+"set noequalalways 
 
 
 "Allow incr/decr (^A, ^X)
@@ -141,6 +150,10 @@ if dein#load_state('~/.cache/dein')
 	call dein#add('nvie/vim-flake8')
 "	call dein#add('fholgado/minibufexpl.vim')
 
+	" AutoFormat
+	call dein#add('google/vim-maktaba', {'merged': 0})
+	call dein#add('google/vim-codefmt', {'merged': 0})
+	"call dein#add( 'google/vim-glaive')
 
 	" JavaScript
 	"call dein#add('mxw/vim-jsx')
@@ -170,6 +183,7 @@ let g:python3_host_prog  = '/usr/bin/python'
 let g:python_host_prog  = '/usr/bin/python2'
 " Skip the check of neovim module
 let g:python3_host_skip_check = 1
+let g:python_host_skip_check = 1
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 1
@@ -184,15 +198,6 @@ let g:deoplete#sources#go#use_cache = 1
 let g:deoplete#sources#go#json_directory = '~/.cache/nvim/deoplete/go'
 "let g:godebug_breakpoints_file = '~/.dlv_breakpoints
 let g:deoplete#disable_auto_complete = 0
-"
-" Enable TCP socket on nmdempscki gocode. [none, unix, tcp]
-"let g:deoplete#sources#go#gocode_sock = 'tcp'
-"let g:deoplete#sources#go#source_importer = 1
-"let g:deoplete#sources#go#auto_goos = 1
-"let g:deoplete#sources#go#pointer = 1
-
-let g:go_gocode_propose_builtins = 1
-"let g:go_gocode_unimported_packages = 1
 
 " Enable GoPlease
 let g:go_def_mode='gopls'
@@ -201,7 +206,9 @@ let g:go_rename_command="gopls"
 let g:go_gopls_complete_unimported = 1
 let g:go_gopls_deep_completion = 1
 let g:go_gopls_fuzzy_matching = 1
-"let g:go_gopls_use_placeholders = 1
+" Placeholders can not be used as snippet. Need manualy delete them
+let g:go_gopls_use_placeholders = 0
+"
 " Some cheat-code for gopls and deoplete
 call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
@@ -322,30 +329,44 @@ endfunction
 
 
 
+let g:auto_ctags = 1
 
 augroup filetype-go
 	autocmd!
 	autocmd FileType go setlocal tabstop=4
 	autocmd FileType go setlocal shiftwidth=4
-	autocmd FileType go let g:auto_ctags = 1
+	"autocmd FileType go let g:auto_ctags = 1
 	"autocmd FileType go let g:go_fmt_fail_silently = 1
+	" fmt_experimentas should preserve foldings
+	autocmd FileType go let g:go_fmt_experimental = 1
 	autocmd FileType go let g:go_highlight_functions = 1
 	autocmd FileType go let g:go_highlight_methods = 1
 	autocmd FileType go let g:go_highlight_structs = 1
 	autocmd FileType go let g:go_highlight_operators = 1
 	autocmd FileType go let g:go_highlight_extra_types = 1
 	autocmd FileType go let g:go_highlight_build_constraints = 1
-	autocmd FileType go let g:go_auto_sameids = 1
-	autocmd FileType go let g:go_auto_type_info = 1
+	autocmd FileType go let g:go_highlight_fields = 1
+	" auto_sameids is quite distruptive thuing, espesialy with some colorschemes
+	autocmd FileType go let g:go_auto_sameids = 0
+	" auto typeinfo is useless IMO. 
+	" (easieer to jump to definition, to read the coment and signature)
+	autocmd FileType go let g:go_auto_type_info = 0
 	autocmd FileType go let g:go_play_open_browser = 1
-	autocmd FileType go let g:go_fmt_command = 'goimports'
+	"autocmd FileType go let g:go_fmt_command = 'goimports'
 
-	"let g:go_metalinter_excludes = ['dupl', 'gas', 'errcheck', 'gotype']
+	autocmd FileType go let g:go_fmt_command = 'gopls'
+	autocmd FileType go let g:go_imports_mode = 'gopls'
+	autocmd FileType go let g:go_imports_mode = 'gopls'
+	autocmd FileType go let g:go_info_mode = 'gopls'
+
+	autocmd FileType go let g:go_imports_autosave = 1
+	autocmd FileType go let g:go_fmt_autosave = 1
+
+
 	let g:go_metalinter_deadline = '1500s'
 	let g:go_list_type = "quickfix"
 	"
-	"let g:syntastic_go_checkers 
-	"let g:syntastic_go_gometalinter_args
+	let g:syntastic_go_checkers = ['golangci-lint']
 
 	autocmd FileType go nmap <leader>r :w<cr><Plug>(go-run)
 	autocmd FileType go nmap <leader>rd :w<cr>:GoDebug<cr>

@@ -53,7 +53,7 @@ PROMPT=$PROMPT'$(kube_ps1) '
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode git pyenv golang python redis-cli systemd virtualenv kube-ps1)
+plugins=(vi-mode git pyenv golang python redis-cli systemd virtualenv kube-ps1 aws)
 
 source $ZSH/oh-my-zsh.sh
 
